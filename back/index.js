@@ -11,5 +11,4 @@ app.post("/register",async (req,resp) => {
     resp.send(result)
 })
 
-
 app.listen(5000);
