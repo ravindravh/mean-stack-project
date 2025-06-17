@@ -24,9 +24,13 @@ const AddProducts = () => {
     <div className='register'>
         <h1>Add Products</h1>
         <input className='inputbox' type='text' value={name} onChange={(e)=> setName(e.target.value)} placeholder='Enter Name' />
+        {!name && <span className='invalid'>Enter a valid Name</span>}
         <input className='inputbox' type='text' value={price} onChange={(e)=> setPrice(e.target.value)} placeholder='Enter price' />
+        {!price && <span className='invalid'>Enter a valid Name</span>}
         <input className='inputbox' type='text' value={category} onChange={(e)=> setCategory(e.target.value)} placeholder='Enter Category' />
+        {!category && <span className='invalid'>Enter a valid Name</span>}
         <input className='inputbox' type='text' value={company} onChange={(e)=> setCompany(e.target.value)} placeholder='Enter Company' />
+        {!company && <span className='invalid'>Enter a valid Name</span>}
         <button className='appButton' type='button' onClick={addData} > Add </button>
         
     </div>

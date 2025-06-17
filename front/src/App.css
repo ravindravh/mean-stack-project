@@ -50,6 +50,29 @@ padding: 5px;
     text-decoration: none;
 }
 
+.invalid {
+  color: red;
+  margin-top: -10px;  
+  display: block;
+  margin-left: 10px;
+}
+
+
+.products {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.products ul li {
+  display: inline-block;
+  border: 1px solid skyblue;
+  padding: 5px;
+  width: 150px;
+}
+
+.products ul {
+  margin: 0px ;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
