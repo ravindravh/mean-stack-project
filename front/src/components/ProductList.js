@@ -54,7 +54,7 @@ const ProductList = () => {
       {
 
       
-        products.map((item, index) => 
+       products.length>0 ? products.map((item, index) => 
         <ul>
         <li>{index+1}</li>
         <li>{item.name}</li>
@@ -66,7 +66,8 @@ const ProductList = () => {
           <Link to={"/update/"+item._id}>Update</Link>
           </li>      
       </ul>
-       )}
+       ) : <h1> No Result Found...</h1>
+      }
    
       
      
