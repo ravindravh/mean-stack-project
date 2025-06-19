@@ -13,6 +13,16 @@ const ProductList = () => {
     setProducts(Array.isArray(result) ? result : [])
   }
 
+  const searchHandler =  async (event) => {
+    let key =event.target.value
+    let result = await fetch (`http://localhost:5000/search/${key}`)
+    result = await result.json()
+    if(result) {
+      setProducts(result)
+    }
+
+  }
+
   const deleteProduct = async(id) =>{
     let result = await fetch(`http://localhost:5000/product/${id}`,
     {
@@ -29,6 +39,7 @@ const ProductList = () => {
   return (
     <div className='products'>
       <h3>Product List</h3>
+      <input type='text' placeholder='Search Product' className='search-product' onChange={searchHandler} /> 
       <ul>
         <li>S. No.</li>
         <li>Name</li>
