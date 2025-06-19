@@ -15,10 +15,13 @@ const ProductList = () => {
 
   const searchHandler =  async (event) => {
     let key =event.target.value
+    if(key){
     let result = await fetch (`http://localhost:5000/search/${key}`)
     result = await result.json()
     if(result) {
       setProducts(result)
+    }} else {
+      getProducts()
     }
 
   }
