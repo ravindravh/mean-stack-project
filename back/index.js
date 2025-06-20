@@ -22,9 +22,9 @@ app.post("/register", async (req, resp) => {
         if (err) {
             resp.send({ result: "something went wrong" })
         }
-        resp.send({result, auth: token })
+        resp.send({ result, auth: token })
     })
-})  
+})
 
 app.post("/login", async (req, res) => {
     if (req.body.password && req.body.email) {
@@ -34,7 +34,7 @@ app.post("/login", async (req, res) => {
                 if (err) {
                     res.send({ result: "something went wrong" })
                 }
-                res.send({user,  auth: token })
+                res.send({ user, auth: token })
             })
 
         } else {
@@ -45,13 +45,13 @@ app.post("/login", async (req, res) => {
     }
 })
 
-app.post("/add-product", async (req, res) => {
+app.post("/add-product", verifyToken, async (req, res) => {
     let product = new Product(req.body)
     let result = await product.save();
     res.send(result)
 })
 
-app.get("/products", async (req, res) => {
+app.get("/products", verifyToken, async (req, res) => {
     let product = await Product.find()
     if (product.length > 0) {
         res.send(product)
@@ -60,12 +60,12 @@ app.get("/products", async (req, res) => {
     }
 })
 
-app.delete("/product/:id", async (req, res) => {
+app.delete("/product/:id", verifyToken, async (req, res) => {
     let result = await Product.deleteOne({ _id: req.params.id })
     res.send(result)
 })
 
-app.get("/product/:id", async (req, res) => {
+app.get("/product/:id", verifyToken, async (req, res) => {
     let result = await Product.findOne({ _id: req.params.id })
     if (result) {
         res.send(result)
@@ -74,7 +74,7 @@ app.get("/product/:id", async (req, res) => {
     }
 })
 
-app.put("/product/:id", async (req, res) => {
+app.put("/product/:id", verifyToken, async (req, res) => {
     let result = await Product.updateOne(
         { _id: req.params.id },
         {
@@ -86,7 +86,7 @@ app.put("/product/:id", async (req, res) => {
 
 })
 
-app.get("/search/:key", async (req, res) => {
+app.get("/search/:key", verifyToken, async (req, res) => {
     let result = await Product.find({
         "$or": [
             { name: { $regex: req.params.key, $options: "i" } },
@@ -97,5 +97,27 @@ app.get("/search/:key", async (req, res) => {
 
     res.send(result)
 })
+
+
+function verifyToken(req, res, next) {
+    let token = req.headers['authorization']
+    if (token) {
+        token = token.split(' ')[1]
+        console.warn("middleware called", token)
+        Jwt.verify(token, jwtkey, (err, valid) => {
+            if (err) {
+                res.status(401).send({ result: "Please provide valid token " })
+            } else {
+                next()
+            }
+        })
+
+    } else {
+        res.status(403).send({ result: "Please send token with headers" })
+    }
+
+}
+
+
 
 app.listen(5000);
